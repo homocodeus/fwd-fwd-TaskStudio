@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forward-Forward Task Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p id="hero-eyebrow" class="eyebrow">Task Design / Class Layout / Positive-Negative Rules</p>
+          <h1 id="hero-title">Forward-Forward Task Studio</h1>
+          <p id="hero-text" class="hero-text">
+            Define a new FF problem, choose the task classes, and generate the
+            class-overlay plan and training command needed for another model.
+          </p>
+          <div class="view-switch" role="tablist" aria-label="Workspace view">
+            <a id="view-lab-btn" class="switch-button" href="index.html">Research Lab</a>
+            <a id="view-task-btn" class="switch-button is-selected" href="tasks.html">Task Studio</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="status-row">
+            <span>Device</span>
+            <strong id="device-label">Detecting host</strong>
+          </div>
+          <div class="status-row">
+            <span>Runtime</span>
+            <strong id="runtime-label">Querying backend</strong>
+          </div>
+          <div class="status-row">
+            <span>Model</span>
+            <strong id="model-label">Querying backend</strong>
+          </div>
+          <div class="status-row">
+            <span>Inference</span>
+            <strong id="inference-mode">Mock fallback active</strong>
+          </div>
+        </div>
+      </header>
+
+      <main id="task-view" class="task-view">
+        <section class="panel task-studio-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Task Studio</p>
+              <h2>Design another FF task</h2>
+            </div>
+          </div>
+
+          <div class="task-grid">
+            <section class="task-builder">
+              <div class="task-form-grid">
+                <label class="field">
+                  <span>Task name</span>
+                  <input id="task-name" type="text" placeholder="Digits + letters" />
+                </label>
+                <label class="field">
+                  <span>Dataset</span>
+                  <input id="task-dataset" type="text" placeholder="EMNIST Balanced" />
+                </label>
+                <label class="field field-wide">
+                  <span>Classes</span>
+                  <textarea id="task-classes" rows="4" placeholder="0,1,2,3,4,5,6,7,8,9,A,B,C"></textarea>
+                </label>
+                <label class="field">
+                  <span>Input shape</span>
+                  <input id="task-shape" type="text" placeholder="28x28 grayscale" />
+                </label>
+                <label class="field">
+                  <span>Model tag</span>
+                  <input id="task-model-tag" type="text" placeholder="ff_letters_v1" />
+                </label>
+                <label class="field">
+                  <span>Training script</span>
+                  <input id="task-script" type="text" placeholder="ff_train_generic.py" />
+                </label>
+                <label class="field field-wide">
+                  <span>Positive rule</span>
+                  <textarea id="task-positive" rows="3" placeholder="Real sample paired with its correct class id."></textarea>
+                </label>
+                <label class="field field-wide">
+                  <span>Negative rule</span>
+                  <textarea id="task-negative" rows="3" placeholder="Real sample paired with a wrong class id sampled from the same task vocabulary."></textarea>
+                </label>
+              </div>
+
+              <div class="stage-actions">
+                <button id="task-save-btn" class="primary-button" type="button">Save task preset</button>
+                <button id="task-new-btn" class="ghost-button" type="button">New blank task</button>
+              </div>
+            </section>
+
+            <aside class="task-sidebar">
+              <article class="task-card">
+                <h3>Saved tasks</h3>
+                <div id="task-presets" class="task-presets"></div>
+              </article>
+
+              <article class="task-card">
+                <h3>What this creates</h3>
+                <div class="task-summary-grid">
+                  <div class="live-metric">
+                    <span>Class count</span>
+                    <strong id="task-class-count">0</strong>
+                  </div>
+                  <div class="live-metric">
+                    <span>Label slots</span>
+                    <strong id="task-label-slots">0</strong>
+                  </div>
+                  <div class="live-metric">
+                    <span>Task type</span>
+                    <strong id="task-type">Classifier</strong>
+                  </div>
+                </div>
+              </article>
+            </aside>
+          </div>
+
+          <div class="task-output-grid">
+            <article class="stage-card">
+              <h3>Training command</h3>
+              <pre id="task-train-command" class="code-card"></pre>
+            </article>
+            <article class="stage-card">
+              <h3>Overlay plan</h3>
+              <p id="task-overlay-plan"></p>
+            </article>
+            <article class="stage-card">
+              <h3>Generated task config</h3>
+              <pre id="task-config-output" class="code-card"></pre>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

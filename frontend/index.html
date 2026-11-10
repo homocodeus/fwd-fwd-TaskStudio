@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forward-Forward Visual Agent</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p id="hero-eyebrow" class="eyebrow">Backprop-Free / Local Goodness / MPS</p>
+          <h1 id="hero-title">Forward-Forward Visual Agent</h1>
+          <p id="hero-text" class="hero-text">
+            A front view for probing layer-local training, positive and negative
+            passes, and digit inference without a global gradient.
+          </p>
+          <div class="view-switch" role="tablist" aria-label="Workspace view">
+            <a id="view-lab-btn" class="switch-button is-selected" href="index.html">Research Lab</a>
+            <a id="view-task-btn" class="switch-button" href="tasks.html">Task Studio</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="status-row">
+            <span>Device</span>
+            <strong id="device-label">Detecting host</strong>
+          </div>
+          <div class="status-row">
+            <span>Runtime</span>
+            <strong id="runtime-label">Querying backend</strong>
+          </div>
+          <div class="status-row">
+            <span>Model</span>
+            <strong id="model-label">Querying backend</strong>
+          </div>
+          <div class="status-row">
+            <span>Inference</span>
+            <strong id="inference-mode">Mock fallback active</strong>
+          </div>
+        </div>
+      </header>
+
+      <main id="lab-view" class="dashboard">
+        <aside class="panel timeline-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Research Track</p>
+              <h2>Forward-Forward timeline</h2>
+            </div>
+          </div>
+
+          <div id="timeline-list" class="timeline-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="workspace-stack">
+          <section class="panel stage-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Current Step</p>
+                <h2 id="stage-title">Stage title</h2>
+              </div>
+              <div class="stage-chip" id="stage-status-chip">Locked</div>
+            </div>
+
+            <p id="stage-summary" class="hero-text stage-summary"></p>
+
+            <div id="stage-live-strip" class="stage-live-strip" hidden>
+              <div class="live-metric">
+                <span>Evaluation accuracy</span>
+                <strong id="live-eval-accuracy">-</strong>
+              </div>
+              <div class="live-metric">
+                <span>Samples</span>
+                <strong id="live-eval-total">-</strong>
+              </div>
+              <div class="live-metric">
+                <span>Composition status</span>
+                <strong id="live-composition-status">-</strong>
+              </div>
+            </div>
+
+            <div class="stage-detail-grid">
+              <article class="stage-card">
+                <h3>Objective</h3>
+                <p id="stage-objective"></p>
+              </article>
+              <article class="stage-card">
+                <h3>How to finish</h3>
+                <p id="stage-finish"></p>
+              </article>
+            </div>
+
+            <div class="stage-checklist-wrap">
+              <h3>Checklist</h3>
+              <ul id="stage-checklist" class="stage-checklist"></ul>
+            </div>
+
+            <div class="stage-detail-grid">
+              <article class="stage-card">
+                <h3>Run now</h3>
+                <pre id="stage-command" class="code-card"></pre>
+              </article>
+              <article class="stage-card">
+                <h3>Why it matters</h3>
+                <p id="stage-reason"></p>
+              </article>
+            </div>
+
+            <div class="stage-actions">
+              <button id="stage-complete-btn" class="primary-button">Mark step complete</button>
+              <button id="stage-reset-btn" class="ghost-button">Reset progress</button>
+            </div>
+          </section>
+
+          <div class="workspace-grid">
+            <section class="panel draw-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Input Surface</p>
+                  <h2>Draw a digit</h2>
+                </div>
+                <div class="panel-actions">
+                  <button id="seed-btn" class="ghost-button">Seed stroke</button>
+                  <button id="clear-btn" class="ghost-button">Clear</button>
+                </div>
+              </div>
+
+              <div class="canvas-stack">
+                <canvas id="draw-canvas" width="280" height="280" aria-label="Digit drawing area"></canvas>
+                <div class="mini-grid-wrap">
+                  <p>28 x 28 downsample</p>
+                  <canvas id="mini-canvas" width="84" height="84" aria-hidden="true"></canvas>
+                </div>
+              </div>
+
+              <div class="controls">
+                <label for="stroke-size">Stroke</label>
+                <input id="stroke-size" type="range" min="8" max="28" value="18" />
+                <button id="predict-btn" class="primary-button">Score Goodness</button>
+              </div>
+            </section>
+
+            <section class="panel results-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Inference</p>
+                  <h2>Label goodness</h2>
+                </div>
+                <div class="result-badge" id="top-prediction">?</div>
+              </div>
+
+              <div class="results-grid">
+                <div class="metric-card">
+                  <span>Predicted digit</span>
+                  <strong id="predicted-digit">-</strong>
+                </div>
+                <div class="metric-card">
+                  <span>Confidence proxy</span>
+                  <strong id="confidence-score">-</strong>
+                </div>
+                <div class="metric-card">
+                  <span>Input energy</span>
+                  <strong id="input-energy">-</strong>
+                </div>
+              </div>
+
+              <div id="score-bars" class="score-bars" aria-live="polite"></div>
+
+              <p class="panel-note">
+                This workspace can use live FF inference from the backend. If the backend is missing,
+                the interface falls back to a deterministic mock scorer so the flow stays testable.
+              </p>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
